@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
+#include <sstream>
+#include <unistd.h>
+int main()
+{
+ struct sockaddr_in server;
+ int sock;
+ char buf[1024];
+ int n;
+ char buffer[1024];
+ char sdata[1024];
+
+ char command[] = "gotoready\n";
+ int status;
+
+ sock = socket(AF_INET, SOCK_STREAM, 0);
+
+ server.sin_family = AF_INET;
+ server.sin_port = htons(11111);
+ server.sin_addr.s_addr = inet_addr("163.225.223.118");
+
+ connect(sock, (struct sockaddr *)&server, sizeof(server));
+ memset(buf, 0, sizeof(buf));
+ std::stringstream sts;
+ // fgets(buffer,sizeof buffer,stdin);
+ // strcat(buffer,"\n");
+ /*sts << buffer;*/
+ /*sts >> sdata;*/
+ // const char* sdataconst= buffer;
+
+int N;
+
+scanf("%d",&N);
+
+ if ((status = send(sock, command, strlen(command), MSG_NOSIGNAL)) >= 0) {
+   fprintf(stderr, "sent: %d, %s\n", status, command);
+ }
+ /*send(sock, sbuf, sizeof(sbuf), 0);*/
+
+
+ n = read(sock, buf, sizeof(buf));
+ printf("%d, %s\n", n, buf);
+
+ close(sock);
+
+ return 0;
+}
